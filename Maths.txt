@@ -1,4 +1,4 @@
-WMath:
+Maths:
 - NumSets
 d Functions
 - Trigonometry
