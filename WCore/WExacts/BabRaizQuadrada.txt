@@ -1,0 +1,13 @@
+Algoritmo babilônico para calcular a raiz 
+
+float raiz_quadrada (float n)
+	{
+		float suposição, resultante;
+		  suposição = n / 2;
+		para (int i = 0; i < 10; i++)
+		{
+			resultante = número / suposição;
+			suposição = (suposição + resultante) / 2;
+		}
+		returnar suposição;
+	}

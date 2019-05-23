@@ -1,0 +1,50 @@
+// -*- C++ -*-
+//--->Header manipulation<---//
+//Made by Wahh R. S.
+#ifndef HMANIP_
+#define HMANIP_
+#include "../WFolder/dirmanip"
+#include "WhwCppInterpreter"
+namespace wrs{
+void CppHeaderInclude(WDir & Dir, ofstream & fout)
+	{
+		if (fout.is_open())
+		{
+			typestrings paths;
+			parsePaths(Dir, paths, FILE_);
+			for (int i = 0; i < paths.size(); i++)
+			{
+				if (paths[i].second.find(".cpp") == string::npos)
+				{
+					fout << "#include \"" << paths[i].second << "\"" << endl;
+				}
+				else;
+			}
+		}
+		else
+			cerr << "File not opened!";
+	}
+		int create_hpp_file(const typestring & path, hfstream & fout)
+	{
+		if (path.first == FILE_)
+		{
+			fout.begin(path.second);
+			if (!fout.fail())
+			{
+			//	structure.head(fout);
+				fout.begin_namespace();
+			//	structure.declaration(fout);
+				// incomplete
+			//	structure.definition(fout);
+				fout.finish();
+				return true;
+			}
+			else;
+		}
+		else;
+		return false;
+	}
+}	// wrs namespace
+#define  includeHeaders wrs::CppHeaderInclude
+#endif
+	// HMANIP_

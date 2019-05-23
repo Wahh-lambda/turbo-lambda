@@ -1,0 +1,249 @@
+// -*- C++ -*-
+//--->WDir manipulation<---//
+/*Made by Wahh R. S.*/
+#ifndef WDIRMANIP__
+#define WDIRMANIP__
+#include "WDir"
+#define  getDirContent wrs::getContent;
+#define parseDirList wrs::parseListFile
+#define writeDirContent wrs::dirListWriter
+namespace wrs
+{
+	const string WFList = ".WF";
+	const string allri = ".genAllHeaderIncluder";
+	void getHomeContent(WDir &);
+	// get the contents of the working directory.
+	void parseListFile(const string &, WDir &);
+	// parse the list genereted by the ls command and stores them on WDir
+	// object.
+	// it uses the streamRList(istream&, WDir&) function.
+	void dirListWriter(const WDir & o, ofstream &);
+	// Write WDir contents to the working directory. 
+	// Or to a specified path informed on WDir.
+	void streamRList(istream &, WDir &);
+	// get the list formated by the command ls,
+	// and put to the WDir object.
+
+/******************************************
+planned:
+obs: obsolete!
+void parseList(istream &, WDir&);
+*******************************************/
+	void getContent(const string &, WDir &);
+	// gets the content of a folder, example:
+	// getContent ("dir name", wdir());
+	bool dirExist(string);
+	// Make sure if a directory exists.
+	int dirKeep(string);
+	// Creates a directory if it don't exist, 
+	// and do nothing if it exists.
+	bool fileExist(string);
+	// Make sure if a directory exist;
+	string abreviatePath(string, string);
+	// Transform a full path in an anreviated path like: dir1/dir2/example to
+	// ../../example.
+	void parsePaths(WDir&, typestrings &, char);
+	// parse the contents of the WDir element to the
+	// typestrings conserving the type and transforming the name on a full
+	// path.
+		void parsePaths(const string&, typestrings &);
+		//Parse all the contents of WDir.
+	/* Definitions */
+	string getPath(WDir o)
+	{
+		if (o.position() == 0)
+			return o.object().second;
+		else
+			return getPath(o.back()) + "/" + o.object().second;
+	}
+	int dirKeep(string dir_)
+	{
+		ofstream _vita_(dir_ + "/vita");
+		if (_vita_.fail())
+		{
+			system(string("mkdir " + dir_).c_str());
+		}
+		else
+		{
+			_vita_.close();
+		}
+		remove(string(dir_ + "/vita").c_str());
+		return 0;
+	}
+
+	bool dirExist(string dir)
+	{
+		ofstream _vita_(dir + "/vita");
+		if (_vita_.fail())
+			return false;
+		else
+		{
+			_vita_.close();
+			remove(string(dir + "/vita").c_str());
+			return true;
+		}
+	}
+
+	bool fileExist(string path)
+	{
+		ifstream Wfin(path);
+		if (Wfin.fail())
+			return false;
+		else
+			return true;
+	}
+	string abreviatePath(string source, string dest)
+	{
+		string abr, s = source,
+			d = dest.substr(0, 3) == ".//" ? dest.substr(3, dest.size() - 2) : dest;
+		while (s.find('/') != string::npos)
+		{
+			if (d.substr(0, d.find('/')) == s.substr(0, s.find('/')))
+			{
+				s.erase(0, s.find('/') + 1);
+				d.erase(0, d.find('/') + 1);
+			}
+			else
+				break;
+		}
+		for (int i = 0; i < d.size(); i++)
+			if (d[i] == '/')
+				abr += "../";
+			else;
+		abr += s;
+		return abr;
+	}
+	void parsePaths(WDir & Dir, typestrings & paths, char addrType)
+	{
+		// paths.clear();
+		typestring path = typestring { Dir.object().first, getPath(Dir) };
+		// cerr << "#" << path<< endl;
+		if (path.first == addrType)
+		{
+			paths.push_back(path);
+		}
+		else if (addrType == wrs::all)
+		{
+			paths.push_back(path);
+		}
+		else;
+		for (int i = 0; i < Dir.size(); i++)
+			parsePaths(Dir[i], paths, addrType);
+	}
+	void parsePaths(const string& Dir, typestrings& paths){
+		WDir o;
+		getContent(Dir, o);
+		parsePaths(o, paths, wrs::all);
+	}
+	void dirListWriter(WDir & o, ofstream & Wfout)
+	{
+		string path = getPath(o);
+		cerr << path << endl;
+		switch (o.object().first)
+		{
+		case DIR_:
+			dirKeep(path);
+			break;
+		case FILE_:
+			if (fileExist(path))
+			{
+				Wfout.open(path);
+				if (!Wfout.fail())
+					cerr << path << " Created!\n";
+				else
+					cerr << "Unable to create file " << path << endl;
+				Wfout.close();
+			}
+			else;
+			break;
+		default:
+			break;
+		}
+		for (int i = 0; i < o.size(); i++)
+			dirListWriter(o[i], Wfout);
+	}
+
+	void streamRList(istream & in, WDir & o, string & tmp)
+	{
+		while (tmp.size() == 0)
+		{
+			if (in.eof())
+				return;
+			getline(in, tmp);
+		}
+		for (int i = tmp.size(); i > 0; i--)
+		{
+			if (tmp[i] == _doubledot)
+			{
+				tmp = tmp.substr(0, i);
+				if (o.position() == 0)
+					o.setObject(charstring{DIR_, tmp});
+				else;
+				getline(in, tmp);
+			}
+			else;
+		}
+		while (tmp.size() != 0)
+		{
+			if (!in.eof())
+			{
+				o.add(charstring{tmp[0], tmp.substr(2, tmp.size())});
+				getline(in, tmp);
+			}
+			else
+				break;
+		}
+		for (int i = 0; i < o.size(); i++)
+		{
+			if (o[i].object().first== DIR_)
+			{
+				tmp.clear();
+				streamRList(in, o[i], tmp);
+			}
+			else;
+		}
+	}
+
+	void streamRList(istream & in, WDir & o)
+	{
+		string s;
+		streamRList(in, o, s);
+	}
+
+	void parseListFile(const string & W, WDir & o)
+	{
+		ifstream fin;
+		fin.open(W);
+		if (!fin.fail())
+		{
+			o.clear();
+			streamRList(fin, o);
+		}
+		else
+			cerr << FILE__READ_ERR;
+		fin.close();
+	}
+
+	void getContent(const string & path, WDir & o)
+	{
+		string cmd;
+#if defined __ANDROID__ || defined __LINUX__
+		cmd += "ls ";
+		cmd += path;
+		cmd += " -R -F > ";
+		cmd += WFDR;
+		cmd += _dotcomma;
+		system(cmd.c_str());
+#endif // __LINUX__
+#ifdef WIN32
+		cmd = "dir /S /B >> ";
+		cmd += WFDR;
+		system(cmd.c_str());
+#endif // WIN32
+		parseListFile(WFDR, o);
+		// remove(WFDR);
+	}
+}
+
+	// WRS namespace 
+#endif // WDIRMANIP__

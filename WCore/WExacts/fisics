@@ -1,0 +1,54 @@
+// -*- C++ -*-
+//--->WFisics<---//
+/*Made by Wahh R. S.*/
+#ifndef WFISICS_
+#define WFISICS_
+#include "Wcore"
+namespace wrs
+{
+	// WRS namespace
+	bool buoyancy(float weight, float radius)
+	{
+		float fluid_weight = 62.4;
+		double Volume;
+		double buyoancy_force;
+		  Volume = (4.0 / 3.0) * pi * pow(radius, 3);
+		  buyoancy_force = Volume * fluid_weight;
+		if (buyoancy_force >= weight)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	double dropDistance(int sec)
+	{
+		int acceleration = 32;
+		return 0.5 * acceleration * pow(sec, 2);
+		/* Assuming no friction or resistance from air and a constant
+		   acceleration of 32 feet per second due to gravity. */
+	}
+	double gravitationalForce(double mass1, double mass2, double distance)
+	{
+		// F = (G * m1 * m2) / d^2;
+		// G = 6.673 * 10^-8 cm^3/g * cm^2;
+		return ((6.673 * pow(10, -8)) * mass1 * mass2) / pow(distance, 2);
+	}
+
+	double farenheitToCelcius(double FTemp)
+	{
+		return ((9.0 / 5.0) * FTemp) + 32;
+	}
+
+	// T(°F)- 32) × 5/9
+
+	double fahrenheitToKelvin(double Ftemp)
+	{
+		return (Ftemp + 459.67) * 5.0 / 9.0;
+	}
+}
+
+	// WRS namespace
+#endif

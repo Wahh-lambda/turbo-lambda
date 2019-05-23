@@ -1,0 +1,137 @@
+// -*- C++ -*-
+//---> WDate and WTime calculator<---//
+/*Made by Wahh R. S.*/
+#ifndef WDATETIME_H
+#define WDATETIME_H
+#include "../WCore/Wcore"
+#include <string>
+#include <time.h>
+namespace wrs
+{
+	// WRS namespace
+	using std::string;
+	class date
+	{
+	  private:
+		int week;
+		bool LeapYear;
+		bool isLeapYear();
+	  protected:
+		int day, month, year;
+	  public:
+		  date();
+		  date(const date &);
+		  date(int, int, int);
+		int getCenturyValue();
+		int getYearValue();
+		int getMonthValue();
+		int dayOfTheWeek();
+	};
+	  date::date():day(1), month(1), year(1)
+	{
+		week = dayOfTheWeek();
+	}
+
+	date::date(const date & anotherDate):day(anotherDate.day),
+		month(anotherDate.month), year(anotherDate.year), week(anotherDate.week)
+	{
+		// intentionally left blank.
+	}
+
+	date::date(int d, int m, int y):day(d), month(m), year(y)
+	{
+		week = dayOfTheWeek();
+	}
+
+	bool date::isLeapYear()
+	{
+		return (!year % 400) || (!year % 4 && year % 100) ? true : false;
+	}
+
+	int date::getCenturyValue()
+	{
+		return (3 - ((year / 100) % 4)) * 2;
+	}
+
+	int date::getYearValue()
+	{
+		return ((year % 100) / 4) + (year % 100);
+	}
+
+	int date::getMonthValue()
+	{
+		switch (month)
+		{
+		case 1:
+			return isLeapYear()? 6 : 0;
+			break;
+		case 2:
+			return isLeapYear()? 2 : 3;
+			break;
+		case 3:
+			return 3;
+			break;
+		case 4:
+			return 6;
+			break;
+		case 5:
+			return 1;
+			break;
+		case 6:
+			return 4;
+			break;
+		case 7:
+			return 6;
+			break;
+		case 8:
+			return 2;
+			break;
+		case 9:
+			return 5;
+			break;
+		case 10:
+			return 0;
+			break;
+		case 11:
+			return 3;
+			break;
+		case 12:
+			return 5;
+			break;
+		default:
+			return -1;
+			break;
+		}
+	}
+
+	int date::dayOfTheWeek()
+	{
+		return (day + getCenturyValue() + getYearValue() + getMonthValue()) % 7;
+		// starts on sunday.
+	}
+
+	class fullTime
+	{
+		int sec, min, hour;
+	  private:
+		  fullTime(int seconds)
+		{
+			hour = seconds / 3600;
+
+			min = (seconds % 3600) / 60;
+			sec = seconds % 60;
+		}
+	};
+	void wait(int seconds)
+	{
+
+		clock_t endwait;
+		endwait = clock() + seconds * CLOCKS_PER_SEC;
+		while (clock() < endwait)
+		{
+		}
+	}
+}
+
+	// WRS namespace
+#endif

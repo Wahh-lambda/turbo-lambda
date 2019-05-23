@@ -1,0 +1,51 @@
+// -*- C++ -*-
+//--->Wcore<---//
+//here have the needed c++ headers
+//and templates for all means.
+//Made by Wahh R. S.
+#ifndef WCORE_
+#define WCORE_
+#ifdef __cplusplus
+#include <cstddef>
+#endif
+#define WRS "wrs"
+#define WAHH "Wahh R.S."
+#define WRS_VERSION 0x000001
+#include <cmath>
+#include <fstream>
+#include <iostream>
+namespace wrs
+{
+	double pi = M_PI;
+	using std::string;
+	using std::endl;
+	using std::cerr;
+	const char _dot = '.';
+	const char _doubledot = ':';
+	const char _dotcomma = ';';
+	const char FILE_ = '-';
+	const char DIR_ = 'd';
+	const char all = 'a';
+	string WorkingDir();
+	const char *WFDR = ".ls";
+	const char *CPP_EXT = ".cpp";
+#define findString findStringOnFile
+#define _DIR_VITA dirKeeper
+#define FILE__READ_ERR "Unable to read contents of file"
+#define TYPE_ERR "Type unknown"
+#define FILE__OPEN_ERR "Unable to open file"
+	string WorkingDir()
+	{
+		string line;
+		// "storage/emulated/0/"
+		  system("pwd > ._");
+		  std::ifstream fin("._");
+		  std::getline(fin, line);
+		  fin.close();
+		  remove("._");
+		  return line + '/';
+	}
+}
+	// WRS namespace
+#endif
+	// WCORE_

@@ -1,0 +1,28 @@
+// -*- C++ -*-
+// --->Whw interpreter<---//
+/* Made by Wahh R. S. */
+#ifndef WHWINTERPRETER_
+#define WHWINTERPRETER_
+#include "../WFolder/filemanip"
+#include "hstream"
+namespace wrs
+{
+	
+	int whwInterpret(const string &);
+	// convert the whw file to a cpp file.
+	int whwInterpret(const string & file)
+	{
+		string fileOut =
+			file.find_last_of('.') != string::npos ? file.substr(0, file.find_last_of('.')):file, s;
+		ifstream fin(file);
+		ofstream fout(fileOut);
+		while (!fin.eof())
+		{
+			fin  >> s;
+			if(s.size());
+		}
+			return 0;
+	}
+
+}								// wrs namespace
+#endif							/* WHWINTERPRETER */

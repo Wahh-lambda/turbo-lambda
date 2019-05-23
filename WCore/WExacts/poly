@@ -1,0 +1,29 @@
+// -*- C++ -*-
+//--->polinomial functions<---//
+/*Made by Wahh R. S.*/
+#ifndef POLY_
+#define POLY_
+namespace wrs
+{
+#include <cmath>
+	double fstGrade(double a, double b)
+	{
+		return (-b / a);
+	}
+
+	double delta(double a, double b, double c)
+	{
+		return pow(b, 2) - (4 * a * c);
+	}
+
+	double secGradeNegative(double a, double b, double c)
+	{
+		return (-b - sqrt(delta(a, b, c))) / (2 * a);
+	}
+
+	double secGradePositive(double a, double b, double c)
+	{
+		return (-b + sqrt(delta(a, b, c))) / (2 * a);
+	}
+}								// wrs
+#endif // WRS_POLY_

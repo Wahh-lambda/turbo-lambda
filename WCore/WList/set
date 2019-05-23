@@ -1,0 +1,122 @@
+// -*- C++ -*-
+//--->WSet list<---//
+/*Made by Wahh R. S.*/
+#ifndef WSET_
+#define WSET_
+#include <vector>
+#include <string>
+namespace wrs
+{
+	using std:: string;
+	using std:: vector;
+	// WRS namespace
+	typedef vector < unsigned int >Nset;
+	typedef vector < int >Zset;
+	typedef vector < double >Qset;
+	// below is class setComparision
+	  template < class T > class CComparision
+	{
+	  protected:
+		vector < T > X, Y, Z;
+		// X = set A, Y = set B, Z = intersection
+	  public:
+		CComparision();
+		CComparision(const vector < T > &, const vector < T > &);
+		  vector < T > _union();
+		  vector < T > intersection();
+		  vector < T > difference();
+		bool isComplement();
+	};
+
+	template < class T > bool contain(const vector < T > &A, const vector < T > &B);
+
+	template < class T > CComparision < T >::CComparision()
+	{
+		// intentionally left blank.
+	}
+
+	template < class T > bool contain(const vector < T > &A, const vector < T > &B)
+	{
+		for (int i = 0; i < B.size(); i++)
+		{
+			if (!A.own(B[i]))
+				return false;
+			else;
+		}
+		return true;
+	}
+
+	template < class T > vector < T > CComparision < T >::_union()
+	{
+		return X + Y + Z;
+	}
+
+	template < class T > vector < T > CComparision < T >::intersection()
+	{
+		return Z;
+	}
+
+	template < class T > vector < T > CComparision < T >::difference()
+	{
+		return X;
+	}
+
+	template < class T > bool CComparision < T >::isComplement()
+	{
+		if (Y.size() == 0)
+			return true;
+		else
+			return false;
+	}
+
+  template < class T > CComparision < T >::CComparision(const vector < T > &A, const vector < T > &B):X(A),
+		Y
+		(B)
+	{
+		vector < T > Z;
+		for (int i = 0; i < A.size(); i++)
+		{
+			for (int j = 0; j < B.size(); j++)
+			{
+				if (X[i] == Y[j])
+				{
+					Z.add(X);
+					X.erase(X.begin() + i);
+					Y.erase(Y.begin() + j);
+				}
+			}
+		}
+	}
+	template < class T > string RInterval(vector < T > x, T init, T fin)
+	{
+		string RI;
+		for (int i = 0; i < x.size(); i++)
+		{
+			if (init <= x[i] && x[i] <= fin)
+				RI = "closed";
+			else if (init < x[i] && x[i] < fin)
+				RI = "opened";
+			else if (init <= x[i] && x[i] < fin)
+				RI = "L-closed_R-opened";
+			else if (init < x[i] && x[i] <= fin)
+				RI = "L-opened_R-closed";
+			else if (init == fin)
+				if (x[i] > init)
+					RI = "]a, +inf[";
+				else if (x[i] < init)
+					RI = "]-inf, a[";
+				else if (x[i] <= init)
+					RI = "]-inf, a]";
+				else if (x[i] >= init)
+					RI = "[a, +inf[";
+				else;
+			else
+				RI = "]-inf, +inf[";
+			return RI;
+		}
+	}
+}
+
+	// WRS namespace
+#endif
+	// wrs

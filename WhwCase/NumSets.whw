@@ -1,0 +1,12 @@
+#incl vector;
+n wrs{
+	u std:vector;
+	c <T>logic
+	{
+		pub: 
+		f default;
+		f boolean;
+		f copy;
+	};
+	f <T>void pertinence(T element, vector<> elementSet);
+}

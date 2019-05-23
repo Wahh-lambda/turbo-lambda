@@ -1,0 +1,13 @@
+// -*- C++ -*-
+//--->WDirectory<---//
+/*Made by Wahh R. S.*/
+#ifndef WDIR_
+#define WDIR_
+#include "../WList/recursive"
+#include "../WAbstract/typeobject"
+namespace wrs{
+	typedef charstring typestring;
+	typedef rlist < typestring > WDir;
+	typedef vector < typestring > typestrings;
+}
+#endif

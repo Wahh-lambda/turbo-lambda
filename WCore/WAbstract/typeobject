@@ -1,0 +1,32 @@
+// -*- C++ -*-
+//--->Type of an ordinary object<---//
+/*Made by Wahh R. S.*/
+#ifndef TYPEOBJECT_
+#define TYPEOBJECT_
+#include <iostream>
+#include <string>
+//#include "WCore"
+namespace wrs
+{
+	using namespace std;
+	typedef pair<char, string> charstring;
+	bool operator ==(const charstring& a, const charstring& b)
+	{
+		return a.first == b.first&&a. second == b. second?true : false;
+	}
+	istream & operator >>(istream & in, charstring& o)
+	{
+		in >> o.first;
+		in >> o. second;
+		return in;
+	}
+	ostream & operator <<(ostream & out, const charstring& o)
+	{
+		out << o.first << ' ' << o. second;
+		return out;
+	}
+}
+
+	// WRS namespace
+#endif
+	// TYPEOBJECT_

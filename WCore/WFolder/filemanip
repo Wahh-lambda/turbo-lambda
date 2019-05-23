@@ -1,0 +1,119 @@
+// -*- C++ -*-
+// --->Vertical list<---//
+/* Made by Wahh R. S. */
+#ifndef FILEMANIP_
+#define FILEMANIP_
+#include "../WCore/wrs"
+#include <iomanip>
+#include <vector>
+
+namespace wrs
+{
+	using std::setw;
+	using std::vector;
+	using std::ostream;
+	using std::ofstream;
+	using std::ifstream;
+	  template < class T > int writeObjs(const string &, const vector < T > &);
+	// Writes a string vector in a file and returns eof().
+	  template < class T > int getObjs(const string &, vector < T > &);
+	// Gets the lines of the file and stores on a string vector and returns
+	// eof().
+	  template < class T > void show(const vector < T > &, ostream &);
+	// shows the vector on ostream.
+	  template < class T > string saveFile(const string &, const vector < T > &);
+	// saves the objects on a vector.
+
+	  template < class T > int writeObjs(const string & file, const vector < T > &objs)
+	{
+		// show(objs, cerr);
+		ofstream fout;
+		  fout.open(file);
+		if (!fout.fail())
+		{
+			for (int i = 0; i < objs.size(); i++)
+			{
+				fout << objs[i] << endl;
+			}
+			fout.close();
+			return true;
+		}
+		else
+			return false;
+	}
+	int getlines(const string & file, vector < string > &vect)
+	{
+		vect.clear();
+		string line;
+		ifstream fin;
+		fin.open(file);
+		if (!fin.fail())
+		{
+			while (!fin.eof())
+			{
+				getline(fin, line);
+				if (fin.eof());
+				else
+					vect.push_back(line);
+			}
+			fin.close();
+			if (vect.size() == 0)
+				return false;
+			return true;
+		}
+		else
+			return false;
+	}
+	template < class T > int getlines(const string & file, vector < T > &objs)
+	{
+		objs.clear();
+		T obj;
+		ifstream fin;
+		fin.open(file);
+		if (!fin.fail())
+		{
+			while (fin >> obj)
+			{
+				objs.push_back(obj);
+			}
+			fin.close();
+			if (objs.size() == 0)
+				return false;
+			return true;
+		}
+		else
+			return false;
+	}
+	template < class T > void show(const vector < T > &objs, ostream & out)
+	{
+		if (objs.size() == 0)
+			out << "Nothing to show!\n";
+		else
+			for (int i = 0; i < objs.size(); i++)
+				out << i << '|' << objs[i] << endl;
+	}
+
+	template < class T > string saveFile(const string & f, const vector < T > &lines)
+	{
+		string file;
+		if (f.size() != 0)
+		{
+			file = f;
+		}
+		else
+		{
+			cerr << "Name of file: ";
+			std::cin >> file;
+		}
+		cerr << file << " ";
+		if (writeObjs(file, lines))
+			cerr << "saved!";
+		else
+			cerr << "not saved!\n";
+		cerr << endl;
+		return file;
+	}
+}
+
+	// WRS namespace
+#endif /* FILEMANIP_ */

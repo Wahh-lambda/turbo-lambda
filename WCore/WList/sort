@@ -1,0 +1,35 @@
+// -*- C++ -*-
+//--->Sort a list<---//
+/*Made by Wahh R. S.*/
+#ifndef SORT_
+#define SORT_
+#include <cstdlib>
+#include "../WCore/Wcore"
+namespace wrs
+{
+	// WRS namespace
+	void randSort(int array[], int x);
+	void increaseSort(int array[], int x);
+	void decreaseSort(int array[], int x);
+
+	void randSort(int array[], int x)
+	{
+		for (int i = 0; i < x; i++)
+		{
+			// shuffle array
+			int tmp = array[i];
+			int randIndex = rand() % x;
+			  array[i] = array[randIndex];
+			  array[randIndex] = tmp;
+		}
+	}
+	void increaseSort(int array[], int x)
+	{
+	}
+	void decreaseSort(int array[], int x)
+	{
+	}
+}
+
+	// WRS namespace
+#endif

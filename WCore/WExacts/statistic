@@ -1,0 +1,29 @@
+// -*- C++ -*-
+//--->statistic functions<---//
+/*Made by Wahh R. S.*/
+#ifndef STATISTIC_
+#define STATISTIC_
+namespace wrs
+{
+	float average(float data[], int size)
+	{
+		int sum;
+		for (int i = 0; i < size; ++i)
+		{
+
+			sum += data[i];
+		}
+		return sum / size;
+	}
+
+	float standardDeviation(float data[], int size)
+	{
+
+		float sum = 0.0, mean, stdDev = 0.0;
+		mean = average(data, size);
+		for (int i = 0; i < size; ++i)
+			stdDev += pow(data[i] - mean, 2);
+		return sqrt(stdDev / size);
+	}
+}								// wrs
+#endif // STATISTIC_

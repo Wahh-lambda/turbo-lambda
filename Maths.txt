@@ -1,0 +1,23 @@
+WMath:
+- NumSets
+d Functions
+- Trigonometry
+- Progressions
+- Matrix
+- LinearSystems
+- CombinedAnalysis
+- Probability
+d Geometry
+- ComplexNumbers
+- Statistics
+
+Functions:
+- poli_I
+- poli_II
+- expo
+- log
+- mod
+
+Geometry:
+- spacial
+- analytical

@@ -1,0 +1,175 @@
+// -*- C++ -*-
+//--->Header stream<---//
+//Made by Wahh R. S.
+#ifndef HSTREAM_
+#define HSTREAM_
+#include "../WFolder/dirmanip"
+#include <fstream>
+namespace wrs
+{
+	using std::string;
+	using std::ofstream;
+	class hfstream:public ofstream
+	{
+		string sname, fname, pname, path;
+	  public:
+		  hfstream();
+		  hfstream(const string & s, const string & n, ios_base::openmode mode = ios_base::out);
+		explicit hfstream(const char *s, ios_base::openmode mode = ios_base::out);
+		explicit hfstream(const string & s, ios_base::openmode mode = ios_base::out);
+		void open(const string & s, ios_base::openmode mode = ios_base::out);
+		void begin();
+		void begin_namespace();
+		void include(const string & s);
+		void include(const string & s, const string & dir);
+		void begin(const string & s, ios_base::openmode mode = ios_base::out);
+		void end_namespace();
+		void finish();
+		const string colect(const string & s, int i);
+		const string colect_c_str(const char *s, int t);
+	};
+	  hfstream::hfstream():ofstream()
+	{
+	}
+
+	hfstream::hfstream(const char *s, ios_base::openmode mode_):ofstream(s, mode_)
+	{
+		fname = colect_c_str(s, 2);
+		pname = colect_c_str(s, 1);
+		path = s;
+	}
+
+	hfstream::hfstream(const string & s, ios_base::openmode mode_):ofstream(s, mode_)
+	{
+		fname = colect(s, 2);
+		pname = colect(s, 1);
+	}
+	hfstream::hfstream(const string & s, const string & n, ios_base::openmode mode_):hfstream()
+	{
+		sname = n;
+		if (s.size() != 0)
+		{
+			fname = colect(s, 2);
+			pname = colect(s, 1);
+			this->open(s);
+		}
+	}
+	void hfstream::open(const string & s, ios_base::openmode mode_)
+	{
+		ofstream::open(s, mode_);
+	}
+	void hfstream::begin(const string & s, ios_base::openmode mode_)
+	{
+		ofstream::open(s, mode_);
+		path = s;
+		fname = colect(s, 2);
+		pname = colect(s, 1);
+		if (!ofstream::fail())
+		{
+			this->begin();
+		}
+		else;
+	}
+		void hfstream:: include(const string & srcPath, const string & file)
+	{
+		// i = include;
+		// example:
+		// i iostream writes #include <iostream> to the file, 
+		// i other_header writes "#include "other_header" to the file.
+		string abrev;
+		WDir dir;
+		*this << "#include ";
+		getContent(srcPath, dir);
+		if (find(charstring
+				 {
+				 '-', file}
+				 , dir) == NULL)
+		{
+			*this << "<" + file + ">";
+		}
+		else
+		{
+			abrev = getPath(*find(charstring
+								  {
+								  '-', file}
+								  , dir));
+			abrev = abreviatePath(abrev, path);
+			// incomplete
+			*this << '\"' + abrev + '\"';
+		}
+		*this << endl;
+	}
+	void hfstream::include(const string & file)
+	{
+		include(WRS, file);
+	}
+	void hfstream::begin_namespace()
+	{
+		if (sname.size() > 0)
+			*this << "namespace " << sname << "{\n";
+		else;
+	}
+
+	void hfstream::finish()
+	{
+		if (this->is_open())
+		{
+			if (sname.size() > 0)
+				*this << "} //";
+			else;
+			*this << sname << "\n#endif //" << fname;
+		}
+		else;
+		ofstream::close();
+	}
+	void hfstream::begin()
+	{
+		*this << "// -*- C++ -*-\n//--->" << pname <<
+			"<---//\n//This file was generated and/or modified by hstream,\n//which was developed\n//by Wahh R.S.\n\n";
+		*this << "#ifndef " << fname << "\n#define " << fname << "\n";
+	}
+	const string hfstream::colect(const string & s, int t)
+	{
+		string x = s;
+		for (int i = s.size() - 1; i >= 0; i--)
+		{
+			if (s[i] == '/')
+			{
+				x = s.substr(i + 1, s.size() - 1);
+				break;
+			}
+			else;
+		}
+		switch (t)
+		{
+		case 1:
+			break;
+		case 2:
+			for (int i = 0; i < x.size(); i++)
+			{
+				if (x[i] == '.')
+				{
+					x[i] = '_';
+				}
+				else
+				{
+					x[i] = toupper(x[i]);
+				}
+			}
+			if (x.find('_') == string::npos)
+			{
+				x += '_';
+			}
+			else;
+			break;
+		default:
+			break;
+		}
+		return x;
+	}
+	const string hfstream::colect_c_str(const char *s, int t)
+	{
+		return colect(s, t);
+	}
+}								// wrs
+#endif // HSTREAM_

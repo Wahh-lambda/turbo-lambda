@@ -1,0 +1,35 @@
+// -*- C++ -*-
+//--->trigonometry functions<---//
+/*Made by Wahh R. S.*/
+#ifndef TRIGONOMETRY_
+#define TRIGONOMETRY_
+namespace wrs
+{
+	int isTriangle(double a, double b, double c)
+	{
+		return a == 0 || b == 0 || c == 0 ? false : true;
+		// false if any side of the triangle is zero.
+		// true if it is not.
+	}
+
+	double arbitraryTriangleArea(double a, double b, double c)
+	{
+		double s = (a + b + c) / 2;
+		return isTriangle(a, b, c) * sqrt(s * (s - a) * (s - b) * (s - c));
+		/* nullTriangle is mulplied by the returned value, so it can turn the
+		   result into 0 if the triangle sizes are invalid. */
+	}
+
+	/* Pitagoras equation, straightTriangleHypotenuse (cateto a, cateto b); */
+	double straightTriangleHypotenuse(double a, double b)
+	{
+		return sqrt(pow(a, 2) + pow(b, 2));
+	}
+
+	/* straightTriangleCateto (cateto a, hypotenuse c); */
+	double straightTriangleCateto(double a, double c)
+	{
+		return sqrt(pow(c, 2) - pow(a, 2));
+	}
+}								// wrs
+#endif // TRIGONOMETRY_

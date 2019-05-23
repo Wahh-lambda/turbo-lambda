@@ -1,0 +1,153 @@
+// -*- C++ -*-
+//--->WRecursive list<---//
+/*Made by Wahh R. S.*/
+#ifndef WRECURSIVE_
+#define WRECURSIVE_
+#include "../WCore/wrs"
+#include <iomanip>
+#include <vector>
+namespace wrs
+{
+	using std::vector;
+	using std::ostream;
+	template < class T > class rlist;
+	template < class T > rlist < T > *find(const T &, rlist < T > &);
+	// find an element on a recursive list.
+	  template < class T > class rlist
+	{
+		rlist < T > *outter;
+		T obj;
+	  private:
+		  vector < rlist < T >> inner;
+	  public:
+		  rlist();
+		  rlist(const T &);
+		void add(const rlist < T > &);
+		  rlist < T > &back();
+		void clear();
+		int size() const;
+		void setObject(const T &);
+		T object() const;
+		int position() const;
+		  template < class U > friend ostream & operator <<(ostream &, const rlist < U > &);
+		  template < class U > friend bool operator ==(const rlist < U > &, const rlist < U > &);
+		  rlist < T > &operator [] (int index);
+		const rlist < T > &operator [] (int index)const;
+	};
+
+  template < class T > rlist < T >::rlist():obj(T()), outter(NULL)
+	{
+		// Intentionally left blank
+	}
+
+	template < class T > rlist < T >::rlist(const T & x):obj(x), outter(NULL)
+	{
+		// Intentionally left blank
+	}
+	template < class T > rlist < T > &rlist < T >::back()
+	{
+		return *outter;
+	}
+
+	template < class T > void rlist < T >::clear()
+	{
+		rlist();
+		inner.clear();
+	}
+
+	template < class T > int rlist < T >::size() const
+	{
+		return inner.size();
+	}
+	template < class T > void rlist < T >::add(const rlist < T > &input)
+	{
+		inner.push_back(input);
+		inner[inner.size() - 1].outter = this;
+	}
+
+	template < class T > void rlist < T >::setObject(const T & input)
+	{
+		obj = input;
+	}
+
+	template < class T > T rlist < T >::object()const
+	{
+		return obj;
+	}
+	template < class T > int rlist < T >::position() const
+	{
+		int pos = 0;
+		rlist *ptr;
+		  ptr = outter;
+		while (ptr != NULL)
+		{
+			ptr = ptr->outter;
+			pos++;
+		}
+		return pos;
+	}
+
+	template < class T > bool operator ==(const rlist < T > &a, const rlist < T > &b)
+	{
+		if (b.size() == a.size() && b.obj == a.obj)
+		{
+			for (int i = 0; i < a.size(); i++)
+			{
+				if (a[i] == b[i])
+					continue;
+				else
+					return false;
+			}
+			return true;
+		}
+		else
+			return false;
+	}
+
+	template < class T > ostream & operator <<(ostream & out, const rlist < T > &o)
+	{
+		string spaces;
+		for (int i = 0; i < o.position(); i++)
+		{
+			spaces += " ";
+		}
+		out << spaces << o.object();
+		if (o.inner.size() > 0)
+		{
+			out << '{' << endl;
+			for (int i = 0; i < o.size(); i++)
+			{
+				out << spaces << o[i] << endl;
+			}
+			out << spaces << spaces << '}';
+		}
+		else;
+		return out;
+	}
+
+
+	template < class T > rlist < T > &rlist < T >::operator [](int index)
+	{
+		return inner[index];
+	}
+
+	template < class T > const rlist < T > &rlist < T >::operator[] (int index)const
+	{
+		return inner[index];
+	}
+	template < class T > rlist < T > *find(const T & tn, rlist < T > &o)
+	{
+		if (tn == o.object())
+			return &o;
+		for (int i = 0; i < o.size(); i++)
+		{
+			if (find(tn, o[i]) != NULL)
+				return find(tn, o[i]);
+			else;
+		}
+		return NULL;
+	}
+}
+
+	// WRS namespace
+#endif

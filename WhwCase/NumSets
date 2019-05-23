@@ -1,0 +1,11 @@
+// -*- C++ -*-
+//--->NumSets<---//
+//This file was generated and/or modified by hstream,
+//which was developed
+//by Wahh R.S.
+
+#ifndef NUMSETS_
+#define NUMSETS_
+namespace wrs{
+} //wrs
+#endif //NUMSETS_

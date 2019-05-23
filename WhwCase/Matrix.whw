@@ -1,0 +1,32 @@
+#incl iomanip, vector;
+n wrs{
+	use std:pow, setw, vector, istream, ostream;
+	 class < T > matrix
+	{
+		var vect <<>> MATRIX;
+		pub:
+		 constr
+		{
+			default;
+			copy;
+			(int m, int n);
+		}
+		friends{
+			bool{ =(A, B)};
+			iostream{<<(out, o), >>(in, o)};
+		}
+		op{+,-, *, *(), -(),[],[]c}
+		access{
+			det() c;
+			cof(int i, int j) c;
+			int line_size() cc;
+			int column_size() cc;
+			getElement(int i, int j) c;
+		}
+		mut{
+			int erase_line(int index);
+			int erase_column(int index);
+			void setElement(int i, int j, c T & element);
+		}
+	};
+}
