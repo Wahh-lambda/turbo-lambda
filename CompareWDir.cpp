@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "wrs/WList/WDir"
+#include "wrs/WFolder/dirmanip"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -22,7 +22,15 @@ int main()
 	else
 		cout << "The folders have one, or more and/or all folders and files differents";
 	cout << endl;
-	system("pause");
+	#ifdef WIN32
+#define PAUSE 1
+#else
+#define PAUSE 0
+#endif
+if(PAUSE==1)
+   system("pause");
+else
+   system("read -p");
 	cout << endl << "Folder 1: " << endl << dir1 << endl << "Folder 2: " << endl << dir2 << endl;
 	cout << "Path: ";
 	cout << getPath(dir1) << endl;
